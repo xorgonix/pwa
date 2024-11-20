@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA with PocketBase</title>
+    <title>Transactions - PWA with PocketBase</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
     <link rel="manifest" href="/manifest.json">
     <meta name="theme-color" content="#ffffff">
@@ -11,13 +11,11 @@
 </head>
 <body>
     <main class="container">
-        <h1>PWA with PocketBase</h1>
-        <p>Welcome to our PWA application. Please register or log in to access your transactions.</p>
-        <nav>
-            <a href="register.html">Register</a> | 
-            <a href="login.html">Login</a> | 
-            <a href="transactions.html">Transactions</a>
-        </nav>
+        <h1>Transactions</h1>
+        <ul id="transactionsList"></ul>
+        <button id="loadTransactionsButton">Load Transactions</button>
     </main>
+
+    <script src="app.js"></script>
 </body>
 </html>

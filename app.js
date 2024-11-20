@@ -41,51 +41,60 @@ updateUserInfo();
 
 // Registration Form
 const registerForm = document.getElementById('registerForm');
-registerForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('registerEmail').value;
-    const password = document.getElementById('registerPassword').value;
+if (registerForm) {
+    registerForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('registerEmail').value;
+        const password = document.getElementById('registerPassword').value;
 
-    try {
-        const user = await pb.collection('users').create({
-            email,
-            password,
-            passwordConfirm: password,
-        });
-        alert('Registration successful!');
-        console.log('Registered user:', user);
-    } catch (err) {
-        console.error('Registration error:', err);
-        alert('Failed to register. Check the console for details.');
-    }
-});
+        try {
+            const user = await pb.collection('users').create({
+                email,
+                password,
+                passwordConfirm: password,
+            });
+            alert('Registration successful!');
+            console.log('Registered user:', user);
+        } catch (err) {
+            console.error('Registration error:', err);
+            alert('Failed to register. Check the console for details.');
+        }
+    });
+}
 
 // Login Form
 const loginForm = document.getElementById('loginForm');
-loginForm.addEventListener('submit', async (e) => {
-    e.preventDefault();
-    const email = document.getElementById('loginEmail').value;
-    const password = document.getElementById('loginPassword').value;
+if (loginForm) {
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('loginEmail').value;
+        const password = document.getElementById('loginPassword').value;
 
-    try {
-        const authData = await pb.collection('users').authWithPassword(email, password);
-        alert('Login successful!');
-        console.log('Logged in user:', authData.user);
+        try {
+            const authData = await pb.collection('users').authWithPassword(email, password);
+            alert('Login successful!');
+            console.log('Logged in user:', authData.user);
 
-        // Store auth token and user info
-        localStorage.setItem('pb_auth_token', authData.token);
-        localStorage.setItem('pb_auth_user', JSON.stringify(authData.user));
+            // Store auth token and user info
+            localStorage.setItem('pb_auth_token', authData.token);
+            localStorage.setItem('pb_auth_user', JSON.stringify(authData.user));
 
-        updateUserInfo(); // Update UI with user data
-    } catch (err) {
-        console.error('Login error:', err);
-        alert('Failed to log in. Check the console for details.');
-    }
-});
+            updateUserInfo(); // Update UI with user data
+
+            // Redirect to transactions page after login
+            window.location.href = 'transactions.html';
+        } catch (err) {
+            console.error('Login error:', err);
+            alert('Failed to log in. Check the console for details.');
+        }
+    });
+}
 
 // Load Transactions
 async function loadTransactions() {
     const transactionsList = document.getElementById('transactionsList');
+    if (!transactionsList) return;
+
     transactionsList.innerHTML = ''; // Clear the list
 
     if (!pb.authStore.isValid) {
@@ -124,7 +133,9 @@ async function loadTransactions() {
 
 // Button to Load Transactions
 const loadTransactionsButton = document.getElementById('loadTransactionsButton');
-loadTransactionsButton.addEventListener('click', () => {
-    console.log('Load Transactions button clicked');
-    loadTransactions();
-});
+if (loadTransactionsButton) {
+    loadTransactionsButton.addEventListener('click', () => {
+        console.log('Load Transactions button clicked');
+        loadTransactions();
+    });
+}
