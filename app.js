@@ -52,17 +52,31 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Theme Toggle
     const themeToggle = document.getElementById('theme-toggle');
-    if (themeToggle) {
+    const themeIcon = document.getElementById('theme-icon');
+
+    if (themeToggle && themeIcon) {
         themeToggle.addEventListener('click', () => {
             const currentTheme = document.documentElement.getAttribute('data-theme');
             const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
             document.documentElement.setAttribute('data-theme', newTheme);
             localStorage.setItem('theme', newTheme);
+
+            // Update icon
+            if (newTheme === 'dark') {
+                themeIcon.innerHTML = '&#9788;'; // Sun icon
+            } else {
+                themeIcon.innerHTML = '&#9790;'; // Moon icon
+            }
         });
 
-        // Load saved theme
+        // Load saved theme and update icon
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.documentElement.setAttribute('data-theme', savedTheme);
+        if (savedTheme === 'dark') {
+            themeIcon.innerHTML = '&#9788;'; // Sun icon
+        } else {
+            themeIcon.innerHTML = '&#9790;'; // Moon icon
+        }
     }
 
     // Registration Form
