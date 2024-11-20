@@ -26,8 +26,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             try {
-                // Initialize PocketBase client
-                const pb = new PocketBase('http://localhost:8090'); // Update with your PocketBase URL
+                // Initialize PocketBase client with LocalAuthStore
+                const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
 
                 // Authenticate the user
                 const authData = await pb.collection('users').authWithPassword(emailInput.value, passwordInput.value);
@@ -58,8 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
     if (loadTransactionsButton && transactionsList) {
         loadTransactionsButton.addEventListener('click', async () => {
             try {
-                // Initialize PocketBase client
-                const pb = new PocketBase('http://localhost:8090'); // Update with your PocketBase URL
+                // Initialize PocketBase client with LocalAuthStore
+                const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
 
                 // Fetch transactions
                 const result = await pb.collection('transactions').getList(1, 50); // Adjust page and perPage as needed
