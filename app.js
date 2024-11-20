@@ -38,4 +38,24 @@ document.addEventListener('DOMContentLoaded', () => {
             themeIcon.textContent = '🔄';
         }
     }
+
+    const loginForm = document.getElementById('loginForm');
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
+
+            try {
+                const pb = new PocketBase('/api');
+                await pb.collection('users').authWithPassword(email, password);
+                alert('Login successful!');
+                // Redirect to home page or another protected route
+                window.location.href = 'index.html';
+            } catch (error) {
+                console.error('Error logging in:', error);
+                alert('Invalid email or password');
+            }
+        });
+    }
 });
