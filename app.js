@@ -30,11 +30,19 @@ function updateUserInfo() {
     if (pb.authStore.isValid) {
         const userEmail = pb.authStore.model?.email || 'User';
         const userId = pb.authStore.model?.id || 'Unknown';
-        userInfo.textContent = `Welcome, ${userEmail}`;
-        userIdElement.textContent = `Your User ID: ${userId}`;
+        if (userInfo) {
+            userInfo.textContent = `Welcome, ${userEmail}`;
+        }
+        if (userIdElement) {
+            userIdElement.textContent = `Your User ID: ${userId}`;
+        }
     } else {
-        userInfo.textContent = 'Welcome, Guest';
-        userIdElement.textContent = '';
+        if (userInfo) {
+            userInfo.textContent = 'Welcome, Guest';
+        }
+        if (userIdElement) {
+            userIdElement.textContent = '';
+        }
     }
 }
 
