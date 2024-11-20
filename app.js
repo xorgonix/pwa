@@ -82,4 +82,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    // Check if there is an authenticated user and update the "Welcome" message
+    const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
+
+    if (pb.authStore.isValid) {
+        const userInfoElement = document.getElementById('userInfo');
+        if (userInfoElement) {
+            userInfoElement.textContent = `Welcome, ${pb.authStore.model.name || 'User'}`;
+        }
+    }
 });
