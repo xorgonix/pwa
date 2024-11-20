@@ -9,6 +9,8 @@
     <style>
         body {
             background-color: #f8f9fa;
+            color: #212529;
+            transition: background-color 0.3s ease, color 0.3s ease;
         }
         .theme-toggle {
             position: absolute;
@@ -22,6 +24,16 @@
         }
         .theme-toggle:hover {
             transform: scale(1.1);
+        }
+
+        /* Dark theme styles */
+        [data-theme="dark"] body {
+            background-color: #333;
+            color: #fff;
+        }
+        [data-theme="dark"] .text-muted {
+            color: #aaa;
+            transition: color 0.3s ease;
         }
     </style>
 </head>
