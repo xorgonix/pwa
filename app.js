@@ -25,23 +25,15 @@ if (savedToken && savedUser) {
 // Update UI Based on Authentication State
 function updateUserInfo() {
     const userInfo = document.getElementById('userInfo');
-    const userIdElement = document.getElementById('userId');
 
     if (pb.authStore.isValid) {
         const userEmail = pb.authStore.model?.email || 'User';
-        const userId = pb.authStore.model?.id || 'Unknown';
         if (userInfo) {
             userInfo.textContent = `Welcome, ${userEmail}`;
-        }
-        if (userIdElement) {
-            userIdElement.textContent = `Your User ID: ${userId}`;
         }
     } else {
         if (userInfo) {
             userInfo.textContent = 'Welcome, Guest';
-        }
-        if (userIdElement) {
-            userIdElement.textContent = '';
         }
     }
 }

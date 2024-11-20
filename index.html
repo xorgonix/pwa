@@ -24,6 +24,12 @@
     <header class="container">
         <h1>PWA with PocketBase</h1>
         <p id="userInfo">Welcome, Guest</p>
+    </header>
+
+    <main class="container">
+        <button id="theme-toggle" class="secondary" style="position: absolute; top: 10px; right: 10px;">
+            <span id="theme-icon"></span>
+        </button>
         <nav>
             <ul>
                 <li><a href="index.html">Home</a></li>
@@ -32,12 +38,6 @@
                 <li><a href="transactions.html">Transactions</a></li>
             </ul>
         </nav>
-    </header>
-
-    <main class="container">
-        <button id="theme-toggle" class="secondary" style="position: absolute; top: 10px; right: 10px;">
-            <span id="theme-icon"></span>
-        </button>
     </main>
 
     <script src="https://unpkg.com/pocketbase@latest/dist/pocketbase.umd.js"></script>
