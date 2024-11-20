@@ -55,7 +55,7 @@ async function loadTransactions() {
         // Set the auth token from localStorage
         pb.authStore.save(pb.authStore.model, localStorage.getItem('pb_auth_token'));
 
-        // Fetch all records from the 'trans_ext' collection
+        // Fetch all records from the 'trans_ext' collection without filtering by user ID
         const records = await pb.collection('trans_ext').getFullList(); // Update 'transactions' to match your collection name
 
         // Render each transaction as a list item
