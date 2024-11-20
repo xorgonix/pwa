@@ -1,6 +1,11 @@
 // Initialize PocketBase client
 const pb = new PocketBase('http://localhost:8090'); // Update with your actual PocketBase URL
 
+// Check if there's an existing auth token and set it
+if (localStorage.getItem('pb_auth_token')) {
+    pb.authStore.save(null, localStorage.getItem('pb_auth_token'));
+}
+
 // Registration Form
 const registerForm = document.getElementById('registerForm');
 registerForm.addEventListener('submit', async (e) => {
@@ -52,9 +57,6 @@ async function loadTransactions() {
     transactionsList.innerHTML = ''; // Clear the list
 
     try {
-        // Set the auth token from localStorage
-        pb.authStore.save(pb.authStore.model, localStorage.getItem('pb_auth_token'));
-
         // Fetch all records from the 'trans_ext' collection without filtering by user ID
         const records = await pb.collection('trans_ext').getFullList(); // Update 'transactions' to match your collection name
 
@@ -69,3 +71,13 @@ async function loadTransactions() {
         alert('Failed to load transactions. Check the console for details.');
     }
 }
+
+// Button to load transactions
+const loadTransactionsButton = document.getElementById('loadTransactionsButton');
+loadTransactionsButton.addEventListener('click', () => {
+    if (!pb.authStore.isValid) {
+        alert('Please log in first.');
+        return;
+    }
+    loadTransactions();
+});
