@@ -59,6 +59,7 @@ async function loadTransactions() {
     try {
         // Fetch all records from the 'trans_ext' collection without filtering by user ID
         const records = await pb.collection('trans_ext').getFullList(); // Update 'transactions' to match your collection name
+        console.log('Fetched transactions:', records); // Debugging statement
 
         // Render each transaction as a list item
         records.forEach((record) => {
@@ -79,5 +80,6 @@ loadTransactionsButton.addEventListener('click', () => {
         alert('Please log in first.');
         return;
     }
+    console.log('Load Transactions button clicked'); // Debugging statement
     loadTransactions();
 });
