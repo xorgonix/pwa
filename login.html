@@ -7,24 +7,48 @@
     <!-- Add Bootstrap 5.3.3 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <header class="container">
+    <header class="container mt-3">
         <h1>Login</h1>
-        <p id="userInfo">Welcome, Guest</p>
+        <p id="userInfo" class="text-muted">Welcome, Guest</p>
         <button class="theme-toggle" aria-label="Toggle Theme" onclick="toggleTheme()">
             ☀️
         </button>
     </header>
 
-    <main class="container">
-        <form id="loginForm" class="grid">
-            <label for="loginEmail">Email:</label>
-            <input type="email" id="loginEmail" required autocomplete="username" class="form-control">
-            <label for="loginPassword">Password:</label>
-            <input type="password" id="loginPassword" required autocomplete="current-password" class="form-control">
-            <button type="submit" class="btn btn-primary">Login</button>
+    <main class="container mt-4">
+        <form id="loginForm" class="row g-3 needs-validation" novalidate>
+            <div class="col-md-12">
+                <label for="loginEmail" class="form-label">Email</label>
+                <input type="email" class="form-control" id="loginEmail" required autocomplete="username">
+                <div class="invalid-feedback">
+                    Please enter a valid email address.
+                </div>
+            </div>
+            <div class="col-md-12">
+                <label for="loginPassword" class="form-label">Password</label>
+                <input type="password" class="form-control" id="loginPassword" required autocomplete="current-password">
+                <div class="invalid-feedback">
+                    Please enter a valid password.
+                </div>
+            </div>
+            <div class="col-12">
+                <button class="btn btn-primary" type="submit">Login</button>
+            </div>
         </form>
     </main>
 

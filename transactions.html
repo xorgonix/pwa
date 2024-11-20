@@ -7,21 +7,32 @@
     <!-- Add Bootstrap 5.3.3 CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
-
+        body {
+            background-color: #f8f9fa;
+        }
+        .theme-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: transparent;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
-    <header class="container">
+    <header class="container mt-3">
         <h1>Transactions</h1>
-        <p id="userInfo">Welcome, Guest</p>
+        <p id="userInfo" class="text-muted">Welcome, Guest</p>
         <button class="theme-toggle" aria-label="Toggle Theme" onclick="toggleTheme()">
             ☀️
         </button>
     </header>
 
-    <main class="container">
-        <ul id="transactionsList" role="list"></ul>
-        <button id="loadTransactionsButton" aria-label="Load Transactions" class="btn btn-primary">Load Transactions</button>
+    <main class="container mt-4">
+        <ul id="transactionsList" class="list-group mb-3"></ul>
+        <button id="loadTransactionsButton" class="btn btn-primary">Load Transactions</button>
     </main>
 
     <script src="https://unpkg.com/pocketbase@latest/dist/pocketbase.umd.js"></script>
