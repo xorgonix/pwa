@@ -8,3 +8,40 @@ function toggleTheme() {
         body.classList.add('dark-theme');
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('loginForm');
+
+    if (loginForm) {
+        loginForm.addEventListener('submit', async (event) => {
+            event.preventDefault();
+
+            // Validate form inputs
+            const emailInput = document.getElementById('loginEmail');
+            const passwordInput = document.getElementById('loginPassword');
+
+            if (!emailInput.value || !passwordInput.value) {
+                alert('Please fill in all fields.');
+                return;
+            }
+
+            try {
+                // Initialize PocketBase client
+                const pb = new PocketBase('http://localhost:8090'); // Update with your PocketBase URL
+
+                // Authenticate the user
+                const authData = await pb.collection('users').authWithPassword(emailInput.value, passwordInput.value);
+
+                // Handle successful login
+                console.log('Login successful:', authData);
+                alert('Login successful!');
+                window.location.href = 'index.html'; // Redirect to home page or another appropriate page
+
+            } catch (error) {
+                // Handle login error
+                console.error('Login failed:', error);
+                alert('Login failed. Please check your email and password.');
+            }
+        });
+    }
+});
