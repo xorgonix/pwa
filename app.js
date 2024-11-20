@@ -71,7 +71,10 @@ if (loginForm) {
         const password = document.getElementById('loginPassword').value;
 
         try {
+            console.log("Attempting to log in with email:", email);
             const authData = await pb.collection('users').authWithPassword(email, password);
+            console.log("Login successful. Auth data:", authData);
+
             alert('Login successful!');
             console.log('Logged in user:', authData.user);
 
