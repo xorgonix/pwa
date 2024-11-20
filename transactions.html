@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Transactions - PWA with PocketBase</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -37,7 +37,7 @@
 
     <main class="container">
         <ul id="transactionsList" role="list"></ul>
-        <button id="loadTransactionsButton" aria-label="Load Transactions">Load Transactions</button>
+        <button id="loadTransactionsButton" aria-label="Load Transactions" class="btn btn-primary">Load Transactions</button>
     </main>
 
     <script src="https://unpkg.com/pocketbase@latest/dist/pocketbase.umd.js"></script>
