@@ -1,95 +1,160 @@
-function toggleTheme() {
-    const body = document.body;
-    if (body.classList.contains('dark-theme')) {
-        body.classList.remove('dark-theme');
-        body.classList.add('light-theme');
-    } else {
-        body.classList.remove('light-theme');
-        body.classList.add('dark-theme');
+// Initialize PocketBase client
+const pb = new PocketBase('http://localhost:8090'); // Update with your actual PocketBase URL
+
+// Restore Auth Token and User Data
+const savedToken = localStorage.getItem('pb_auth_token');
+const savedUser = localStorage.getItem('pb_auth_user');
+
+if (savedToken && savedUser) {
+    try {
+        // Validate and parse user data
+        const parsedUser = JSON.parse(savedUser);
+        if (parsedUser && typeof parsedUser === 'object') {
+            pb.authStore.save(savedToken, parsedUser);
+        } else {
+            throw new Error("Invalid user data in localStorage");
+        }
+    } catch (err) {
+        console.error("Error restoring auth data:", err);
+        // Clear corrupted data from localStorage
+        localStorage.removeItem('pb_auth_token');
+        localStorage.removeItem('pb_auth_user');
     }
 }
 
+// Update UI Based on Authentication State
+function updateUserInfo() {
+    const userInfo = document.getElementById('userInfo');
+
+    if (pb.authStore.isValid) {
+        const userEmail = pb.authStore.model?.email || 'User';
+        if (userInfo) {
+            userInfo.textContent = `Welcome, ${userEmail}`;
+        }
+    } else {
+        if (userInfo) {
+            userInfo.textContent = 'Welcome, Guest';
+        }
+    }
+}
+
+// Toggle Theme
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
+// Ensure updateUserInfo is called after the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    updateUserInfo();
+
+    // Set initial theme based on local storage or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+
+    // Registration Form
+    const registerForm = document.getElementById('registerForm');
+    if (registerForm) {
+        registerForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('registerEmail').value;
+            const password = document.getElementById('registerPassword').value;
+
+            try {
+                const user = await pb.collection('users').create({
+                    email,
+                    password,
+                    passwordConfirm: password,
+                });
+                alert('Registration successful!');
+                console.log('Registered user:', user);
+            } catch (err) {
+                console.error('Registration error:', err);
+                alert('Failed to register. Check the console for details.');
+            }
+        });
+    }
+
+    // Login Form
     const loginForm = document.getElementById('loginForm');
-
     if (loginForm) {
-        loginForm.addEventListener('submit', async (event) => {
-            event.preventDefault();
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('loginEmail').value;
+            const password = document.getElementById('loginPassword').value;
 
-            // Validate form inputs
-            const emailInput = document.getElementById('loginEmail');
-            const passwordInput = document.getElementById('loginPassword');
+            try {
+                console.log("Attempting to log in with email:", email);
+                const authData = await pb.collection('users').authWithPassword(email, password);
+                console.log("Login successful. Auth data:", authData);
 
-            if (!emailInput.value || !passwordInput.value) {
-                alert('Please fill in all fields.');
+                alert('Login successful!');
+                console.log('Logged in user:', authData.user);
+
+                // Store auth token and user info
+                localStorage.setItem('pb_auth_token', authData.token);
+                localStorage.setItem('pb_auth_user', JSON.stringify(authData.user));
+
+                updateUserInfo(); // Update UI with user data
+
+                // Redirect to transactions page after login
+                window.location.href = 'transactions.html';
+            } catch (err) {
+                console.error('Login error:', err);
+                alert('Failed to log in. Check the console for details.');
+            }
+        });
+    }
+
+    // Load Transactions
+    async function loadTransactions() {
+        const transactionsList = document.getElementById('transactionsList');
+        if (!transactionsList) return;
+
+        transactionsList.innerHTML = ''; // Clear the list
+
+        if (!pb.authStore.isValid) {
+            console.error("User is not authenticated.");
+            alert("Please log in first.");
+            return;
+        }
+
+        try {
+            console.log("AuthStore Model:", pb.authStore.model);
+            console.log("Fetching transactions for user:", pb.authStore.model?.id);
+
+            // Fetch records for the authenticated user
+            const records = await pb.collection('trans_ext').getFullList(200, {
+                filter: `user_id = "${pb.authStore.model.id}"`,
+            });
+            console.log("Fetched Records:", records);
+
+            if (records.length === 0) {
+                console.warn("No transactions found for this user.");
+                transactionsList.innerHTML = '<li>No transactions available.</li>';
                 return;
             }
 
-            try {
-                // Initialize PocketBase client with LocalAuthStore
-                const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
-
-                // Authenticate the user
-                const authData = await pb.collection('users').authWithPassword(emailInput.value, passwordInput.value);
-
-                // Handle successful login
-                console.log('Login successful:', authData);
-                alert('Login successful!');
-
-                // Update user info
-                const userInfoElement = document.getElementById('userInfo');
-                if (userInfoElement) {
-                    userInfoElement.textContent = `Welcome, ${authData.record.name || 'User'}`;
-                }
-
-                window.location.href = 'index.html'; // Redirect to home page or another appropriate page
-
-            } catch (error) {
-                // Handle login error
-                console.error('Login failed:', error);
-                alert('Login failed. Please check your email and password.');
-            }
-        });
-    }
-
-    const loadTransactionsButton = document.getElementById('loadTransactionsButton');
-    const transactionsList = document.getElementById('transactionsList');
-
-    if (loadTransactionsButton && transactionsList) {
-        loadTransactionsButton.addEventListener('click', async () => {
-            try {
-                // Initialize PocketBase client with LocalAuthStore
-                const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
-
-                // Fetch transactions
-                const result = await pb.collection('transactions').getList(1, 50); // Adjust page and perPage as needed
-
-                // Clear existing transactions
-                transactionsList.innerHTML = '';
-
-                // Display transactions
-                result.items.forEach(transaction => {
-                    const listItem = document.createElement('li');
-                    listItem.className = 'list-group-item';
-                    listItem.textContent = `Transaction ID: ${transaction.id}, Amount: $${transaction.amount}`;
-                    transactionsList.appendChild(listItem);
-                });
-
-            } catch (error) {
-                // Handle error
-                console.error('Failed to load transactions:', error);
-                alert('Failed to load transactions. Please try again later.');
-            }
-        });
-    }
-
-    // Check if there is an authenticated user and update the "Welcome" message
-    const pb = new PocketBase('http://localhost:8090', { authStore: new LocalAuthStore() }); // Update with your PocketBase URL
-
-    if (pb.authStore.isValid) {
-        const userInfoElement = document.getElementById('userInfo');
-        if (userInfoElement) {
-            userInfoElement.textContent = `Welcome, ${pb.authStore.model.name || 'User'}`;
+            // Render transactions
+            records.forEach((record) => {
+                const li = document.createElement('li');
+                li.textContent = `${record.video_title}: ${record.status}`;
+                transactionsList.appendChild(li);
+            });
+        } catch (err) {
+            console.error("Error loading transactions:", err);
+            alert("Failed to load transactions. Check the console for details.");
         }
+    }
+
+    // Button to Load Transactions
+    const loadTransactionsButton = document.getElementById('loadTransactionsButton');
+    if (loadTransactionsButton) {
+        loadTransactionsButton.addEventListener('click', () => {
+            console.log('Load Transactions button clicked');
+            loadTransactions();
+        });
     }
 });
