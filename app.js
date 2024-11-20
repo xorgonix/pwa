@@ -44,4 +44,35 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
+
+    const loadTransactionsButton = document.getElementById('loadTransactionsButton');
+    const transactionsList = document.getElementById('transactionsList');
+
+    if (loadTransactionsButton && transactionsList) {
+        loadTransactionsButton.addEventListener('click', async () => {
+            try {
+                // Initialize PocketBase client
+                const pb = new PocketBase('http://localhost:8090'); // Update with your PocketBase URL
+
+                // Fetch transactions
+                const result = await pb.collection('transactions').getList(1, 50); // Adjust page and perPage as needed
+
+                // Clear existing transactions
+                transactionsList.innerHTML = '';
+
+                // Display transactions
+                result.items.forEach(transaction => {
+                    const listItem = document.createElement('li');
+                    listItem.className = 'list-group-item';
+                    listItem.textContent = `Transaction ID: ${transaction.id}, Amount: $${transaction.amount}`;
+                    transactionsList.appendChild(listItem);
+                });
+
+            } catch (error) {
+                // Handle error
+                console.error('Failed to load transactions:', error);
+                alert('Failed to load transactions. Please try again later.');
+            }
+        });
+    }
 });
