@@ -35,6 +35,10 @@ loginForm.addEventListener('submit', async (e) => {
         const authData = await pb.collection('users').authWithPassword(email, password);
         alert('Login successful!');
         console.log('Logged in user:', authData.user);
+
+        // Store the auth token in localStorage
+        localStorage.setItem('pb_auth_token', authData.token);
+
         loadTransactions(); // Load transactions after successful login
     } catch (err) {
         console.error('Login error:', err);
@@ -48,7 +52,10 @@ async function loadTransactions() {
     transactionsList.innerHTML = ''; // Clear the list
 
     try {
-        // Fetch all records from the 'transactions' collection
+        // Set the auth token from localStorage
+        pb.authStore.save(pb.authStore.model, localStorage.getItem('pb_auth_token'));
+
+        // Fetch all records from the 'trans_ext' collection
         const records = await pb.collection('trans_ext').getFullList(); // Update 'transactions' to match your collection name
 
         // Render each transaction as a list item
