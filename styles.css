@@ -1,0 +1,8 @@
+/* Custom styles can go here */
+.container {
+    margin-top: 2rem;
+}
+.grid {
+    display: grid;
+    gap: 0.5rem;
+}

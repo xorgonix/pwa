@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PWA with PocketBase</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="manifest" href="/manifest.webmanifest">
+</head>
+<body>
+    <main class="container">
+        <h1>PWA with PocketBase</h1>
+        <form id="registerForm" class="grid">
+            <label for="registerEmail">Email:</label>
+            <input type="email" id="registerEmail" required>
+            <label for="registerPassword">Password:</label>
+            <input type="password" id="registerPassword" required>
+            <button type="submit">Register</button>
+        </form>
+
+        <form id="loginForm" class="grid">
+            <label for="loginEmail">Email:</label>
+            <input type="email" id="loginEmail" required>
+            <label for="loginPassword">Password:</label>
+            <input type="password" id="loginPassword" required>
+            <button type="submit">Login</button>
+        </form>
+
+        <h2>Transactions</h2>
+        <ul id="transactionsList"></ul>
+    </main>
+    <script src="https://unpkg.com/pocketbase@0.16.5/dist/pocketbase.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
