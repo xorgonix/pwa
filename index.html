@@ -1,17 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- PocketBase Integration -->
+    <script src="https://unpkg.com/pocketbase@latest/dist/pocketbase.umd.js"></script>
 
+    <!-- Meta and Styling -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PWA with PocketBase</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@1/css/pico.min.css">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="manifest" href="/manifest.webmanifest">
 </head>
 <body>
     <main class="container">
         <h1>PWA with PocketBase</h1>
+
+        <!-- User Info -->
+        <h2 id="userInfo">Welcome, Guest</h2>
+        <p id="userId"></p> <!-- Placeholder for User ID -->
+
+        <!-- Registration Form -->
         <form id="registerForm" class="grid">
             <label for="registerEmail">Email:</label>
             <input type="email" id="registerEmail" required>
@@ -20,6 +27,7 @@
             <button type="submit">Register</button>
         </form>
 
+        <!-- Login Form -->
         <form id="loginForm" class="grid">
             <label for="loginEmail">Email:</label>
             <input type="email" id="loginEmail" required>
@@ -28,11 +36,13 @@
             <button type="submit">Login</button>
         </form>
 
+        <!-- Transactions Section -->
         <h2>Transactions</h2>
         <ul id="transactionsList"></ul>
         <button id="loadTransactionsButton">Load Transactions</button>
     </main>
-    <script src="https://unpkg.com/pocketbase@latest/dist/pocketbase.umd.js"></script>
+
+    <!-- Application Logic -->
     <script src="app.js"></script>
 </body>
 </html>
