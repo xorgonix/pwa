@@ -35,6 +35,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Handle successful login
                 console.log('Login successful:', authData);
                 alert('Login successful!');
+
+                // Update user info
+                const userInfoElement = document.getElementById('userInfo');
+                if (userInfoElement) {
+                    userInfoElement.textContent = `Welcome, ${authData.record.name || 'User'}`;
+                }
+
                 window.location.href = 'index.html'; // Redirect to home page or another appropriate page
 
             } catch (error) {
