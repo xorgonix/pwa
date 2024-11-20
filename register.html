@@ -9,16 +9,16 @@
     <meta name="theme-color" content="#ffffff">
     <link rel="icon" href="/favicon.ico">
 </head>
-<body>
+<body style="background-color: var(--background-color); color: var(--text-color);">
     <main class="container">
         <h1>Register</h1>
         <p id="userInfo">Welcome, Guest</p>
         <button onclick="window.history.back()" class="secondary">Back</button>
         <form id="registerForm" class="grid">
             <label for="registerEmail">Email:</label>
-            <input type="email" id="registerEmail" required>
+            <input type="email" id="registerEmail" required autocomplete="username">
             <label for="registerPassword">Password:</label>
-            <input type="password" id="registerPassword" required>
+            <input type="password" id="registerPassword" required autocomplete="new-password">
             <button type="submit">Register</button>
         </form>
     </main>

@@ -50,6 +50,21 @@ function updateUserInfo() {
 document.addEventListener('DOMContentLoaded', () => {
     updateUserInfo();
 
+    // Theme Toggle
+    const themeToggle = document.getElementById('theme-toggle');
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+        });
+
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    }
+
     // Registration Form
     const registerForm = document.getElementById('registerForm');
     if (registerForm) {
