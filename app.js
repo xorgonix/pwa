@@ -38,9 +38,21 @@ function updateUserInfo() {
     }
 }
 
+// Toggle Theme
+function toggleTheme() {
+    const currentTheme = document.documentElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('theme', newTheme);
+}
+
 // Ensure updateUserInfo is called after the DOM is fully loaded
 document.addEventListener('DOMContentLoaded', () => {
     updateUserInfo();
+
+    // Set initial theme based on local storage or default to light
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-theme', savedTheme);
 
     // Registration Form
     const registerForm = document.getElementById('registerForm');

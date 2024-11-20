@@ -13,13 +13,18 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
+            background-color: var(--background-color);
+            color: var(--text-color);
         }
 
         header {
-            background-color: var(--background-color);
-            color: var(--text-color);
+            background-color: var(--header-background-color);
+            color: var(--header-text-color);
             padding: 20px;
             text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         main {
@@ -29,12 +34,30 @@
             align-items: center;
             padding: 20px;
         }
+
+        nav ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            gap: 10px;
+        }
+
+        .theme-toggle {
+            background-color: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2em;
+        }
     </style>
 </head>
-<body style="background-color: var(--background-color); color: var(--text-color);">
+<body>
     <header class="container">
         <h1>PWA with PocketBase</h1>
         <p id="userInfo">Welcome, Guest</p>
+        <button class="theme-toggle" aria-label="Toggle Theme" onclick="toggleTheme()">
+            ☀️
+        </button>
     </header>
 
     <main class="container">
