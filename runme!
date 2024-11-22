@@ -1,0 +1,2 @@
+for ps
+$env:OLLAMA_API_BASE="http://172.28.12.189:11434"
